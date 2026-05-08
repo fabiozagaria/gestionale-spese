@@ -13,24 +13,30 @@ export class AggiungiSpesa {
  private spesaService = inject(SpesaService);
 
  protected formSpesa = new FormGroup({
-      importo: new FormControl<number | null>(null, [Validators.required, Validators.min(0.01)],
+      importo: new FormControl<number | null>(null, [
+          Validators.required, 
+          Validators.min(0.01)
+    ],
       ),
-      categoria: new FormControl<string>('',
-        [Validators.required]
+      categoria: new FormControl<string>('', [
+          Validators.required
+        ]
       ),
-      descrizione: new FormControl<string>(''),
-      data: new FormControl<string>('', Validators.required)
+      descrizione: new FormControl<string>('', Validators.maxLength(30)),
+      data: new FormControl<string>('', 
+        Validators.required)
     });
 
-    onSubmit(): void {
+    onSubmit(e: Event): void {
+      e.preventDefault();
       if(this.formSpesa.invalid) {
-        this.formSpesa.markAsTouched();
+        this.formSpesa.markAllAsTouched();
         return;
       }
 
       const valoreForm = this.formSpesa.getRawValue();
 
-      if (valoreForm.importo === null || !valoreForm.categoria || !valoreForm.data) {
+      if (valoreForm.importo === null || !valoreForm.categoria || !valoreForm.data || valoreForm.descrizione!.length > 30) {
         return;
       }
 

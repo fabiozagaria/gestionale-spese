@@ -1,14 +1,14 @@
 <section class="container">
   <h2>Aggiungi Spesa</h2>
   <form [formGroup]="formSpesa"
-        (ngSubmit)="onSubmit()"
+        (ngSubmit)="onSubmit($event)"
          class="d-flex flex-column justify-content-between gap-2 p-2 m-2 align-items-center w-75" >
     <div class="input-group">
         <label for="importo" class="form-label m-2">
           Importo:
         </label>
         <input formControlName="importo"
-         class="form-control m-2" type="number" id="importo" placeholder="Inserisci l'importo">
+         class="form-control m-2" type="number" step="0.01" id="importo" placeholder="Inserisci l'importo">
 
          @if (formSpesa.controls.importo.invalid && formSpesa.controls.importo.touched) {
             <div class="invalid-feedback d-block">
@@ -35,12 +35,22 @@
           <option value="Prestito">Prestito</option>
         </select>
         <button class="btn btn-info m-2" type="button" role="button" disabled>Aggiungi Nuova Categoria</button>
+
+        @if (formSpesa.controls.descrizione.invalid && formSpesa.controls.descrizione.touched &&
+        formSpesa.controls.categoria.errors?.['required']) {
+          <span class="invalid-feedback">Categoria Obbligatoria! Citrullo!</span>
+        }
     </div>
     <div class="input-group">
       <label class="form-label m-2" for="descrizione">
         Descrizione:
       </label>
-      <textarea formControlName="descrizione" class="form-control" name="descrizione" id="descrizione" cols="10" rows="3" placeholder="(Opzionale)"></textarea>
+      <textarea formControlName="descrizione" class="form-control" name="descrizione" id="descrizione" cols="10" rows="3" placeholder="(Opzionale, Max: 30 char)"></textarea>
+
+      @if (formSpesa.controls.descrizione.invalid && formSpesa.controls.descrizione.touched &&
+      formSpesa.controls.descrizione.errors?.['maxLength']) {
+        <span class="invalid-feedback">Limite caratteri superato! E che devi scrivere?? O.O</span>
+      }
     </div>
     <div class="input-group">
       <label class="form-label m-2" for="data">
