@@ -32,9 +32,13 @@ export class AggiungiSpesa {
           Validators.required
         ]
       ),
-      descrizione: new FormControl<string | null>('', Validators.maxLength(30)),
+      descrizione: new FormControl<string>('', [
+        Validators.maxLength(30)
+      ]),
       data: new FormControl<string>('', 
-        Validators.required)
+        [
+          Validators.required
+        ])
     });
 
 

@@ -13,5 +13,5 @@ import { Expense } from '../../type/spesa';
 export class RiepilogoSpesa {
   private spesaService = inject(SpesaService);
 
-  protected expenseList: WritableSignal<Expense[]> = signal(this.spesaService.allExpense());
+  protected expenseList = this.spesaService.allExpense();
 }

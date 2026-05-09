@@ -18,7 +18,7 @@ export class SpesaService {
   }
 
   public removeExpense(id: string): void {
-    this._allExpense.update(prev => prev.filter(s => s.id === id))
+    this._allExpense.update(prev => prev.filter(s => s.id !== id))
   }
 
   
