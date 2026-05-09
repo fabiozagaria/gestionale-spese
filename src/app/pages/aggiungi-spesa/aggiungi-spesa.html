@@ -2,33 +2,67 @@
 
 <section class="container">
   <h2>Aggiungi Spesa</h2>
-  <form [formGroup]="formSpesa"
+  <form 
+        [formGroup]="formSpesa"
         (ngSubmit)="onSubmit()"
          class="d-flex flex-column justify-content-between gap-2 p-2 m-2 align-items-center w-75" >
-    <div class="input-group">
-        <label for="importo" class="form-label m-2">
+    <div class="d-flex gap-2 justify-content-between align-items-start m-2 p-2 w-100">
+        <div class="form-control w-50 m-3">
+          <label for="importo" class="form-label m-2">
           Importo:
-        </label>
-        <input 
-        formControlName="importo"
-        class="form-control m-2" 
-        type="number" 
-        step="0.01" 
-        id="importo" 
-        placeholder="Inserisci l'importo"
-        [class.is-invalid]="isInvalidField('importo')">
+          </label>
+          <input 
+          formControlName="importo"
+          class="form-control m-2" 
+          type="number" 
+          step="0.01" 
+          id="importo" 
+          placeholder="Inserisci l'importo"
+          [class.is-invalid]="isInvalidField('importo')">
 
-         @if (isInvalidField('importo')) {
-            <div class="invalid-feedback d-block">
-              @if (hasFieldError('importo', 'required')) {
-                <span>L'importo è obbligatorio.</span>
-          }
+          @if (isInvalidField('importo')) {
+              <div class="invalid-feedback d-block">
+                @if (hasFieldError('importo', 'required')) {
+                  <span>L'importo è obbligatorio.</span>
+              }    
 
-              @if (hasFieldError('importo', 'min')) {
-                <span>L'importo deve essere maggiore di zero.</span>
-              }
-            </div>
-}
+                @if (hasFieldError('importo', 'min')) {
+                  <span>L'importo deve essere maggiore di zero.</span>
+                }
+              </div>
+            }
+
+        </div>
+
+        <div class="form-control w-50 m-3">
+          <label for="title" class="form-label m-2">
+          Titolo:
+          </label>
+          <input 
+          formControlName="title"
+          class="form-control m-2" 
+          type="text" 
+          id="title" 
+          placeholder="Inserisci il titolo"
+          [class.is-invalid]="isInvalidField('title')">
+
+          @if (isInvalidField('title')) {
+              <div class="invalid-feedback d-block">
+                @if (hasFieldError('title', 'required')) {
+                  <span>Il titolo è obbligatorio.</span>
+              }    
+
+                @if (hasFieldError('title', 'minlength')) {
+                  <span>Il titolo deve essere minimo di 3 char!.</span>
+                }
+                @if (hasFieldError('title', 'maxlength')) {
+                  <span>Il titolo deve essere massimo di 15 char!.</span>
+                }
+              </div>
+            }
+
+        </div>
+
     </div>
     <div class="input-group">
         <label class="form-label m-2" for="categoria">
@@ -48,10 +82,9 @@
           <option value="Rate">Rate</option>
           <option value="Prestito">Prestito</option>
         </select>
-        <button class="btn btn-info m-2" type="button" role="button" [disabled]="">Aggiungi Nuova Categoria</button>
+        <button class="btn btn-info m-2" type="button" role="button" disabled>Aggiungi Nuova Categoria</button>
 
-        @if (isInvalidField('categoria') &&
-        hasFieldError('categoria', 'required')) {
+        @if (hasFieldError('categoria', 'required')) {
           <span class="invalid-feedback d-block">Categoria Obbligatoria! Citrullo!</span>
         }
     </div>
@@ -69,8 +102,7 @@
       placeholder="(Opzionale, Max: 30 char)"
       [class.is-invalid]="isInvalidField('descrizione')"></textarea>
 
-      @if (isInvalidField('descrizione') &&
-      hasFieldError('descrizione', 'maxlength')) {
+      @if (hasFieldError('descrizione', 'maxlength')) {
         <span class="invalid-feedback d-block">Limite caratteri superato! E che devi scrivere?? O.O</span>
       }
     </div>
@@ -86,7 +118,7 @@
       id="data"
       [class.is-invalid]="isInvalidField('data')">
 
-      @if (isInvalidField('data') && hasFieldError('data', 'required')) {
+      @if (hasFieldError('data', 'required')) {
         <span class="invalid-feedback d-block">Data Obbligatoria direi no?!</span>
 
       }

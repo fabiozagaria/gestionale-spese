@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Expense } from '../../type/spesa';
 import { SpesaService } from '../../services/spesa-service';
-import { sign } from 'crypto';
+
 
 @Component({
   selector: 'app-aggiungi-spesa',
@@ -23,11 +23,16 @@ export class AggiungiSpesa {
           Validators.min(0.01)
     ],
       ),
+      title: new FormControl<string>('', [
+        Validators.required,
+        Validators.maxLength(15),
+        Validators.minLength(3)
+      ]),
       categoria: new FormControl<string>('', [
           Validators.required
         ]
       ),
-      descrizione: new FormControl<string>('', Validators.maxLength(30)),
+      descrizione: new FormControl<string | null>('', Validators.maxLength(30)),
       data: new FormControl<string>('', 
         Validators.required)
     });
@@ -45,7 +50,7 @@ export class AggiungiSpesa {
       return control.hasError(errorName) && control.touched;
     }
     
-    protected showNotice() {
+    protected showNoticeSuccess(): void {
       this.noticeSuccessAddedExpense.set(true);
       setTimeout(() => {
         this.noticeSuccessAddedExpense.set(false);
@@ -62,12 +67,13 @@ export class AggiungiSpesa {
 
       const valoreForm = this.formSpesa.getRawValue();
 
-      if (valoreForm.importo === null || !valoreForm.categoria || !valoreForm.data) {
+      if (!valoreForm.title ||valoreForm.importo === null || !valoreForm.categoria || !valoreForm.data) {
         return;
       }
 
       const nuovaSpesa: Expense = {
         id: crypto.randomUUID(),
+        title: valoreForm.title,
         importo: valoreForm.importo,
         categoria: valoreForm.categoria,
         descrizione: valoreForm.descrizione ?? '',
@@ -76,11 +82,12 @@ export class AggiungiSpesa {
 
       this.spesaService.addExpense(nuovaSpesa);
 
-      this.showNotice();
+      this.showNoticeSuccess();
 
 
       this.formSpesa.reset({
         importo: null,
+        title: '',
         categoria: '',
         descrizione: '',
         data: ''
