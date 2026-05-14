@@ -1,11 +1,13 @@
 <section class="container">
   <h2>Riepilogo Spese:</h2>
   @for (expense of expenseList(); track expense.id) {
-    <app-expense-list [expense]="expense"></app-expense-list>
+    <app-expense-list [expense]="expense"
+    (onRemove)="removeExpense(expense.id)"
+    (onUpdate)="updateExpense(expense.id)"></app-expense-list>
 
   } @empty {
     <p class="invalid-feedback d-block fs-2">
-      Nessuna spesa aggiunta! Per ora!
+      Nessuna spesa aggiunta! 
     </p>
   }
 </section>

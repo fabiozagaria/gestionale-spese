@@ -14,4 +14,13 @@ export class RiepilogoSpesa {
   private spesaService = inject(SpesaService);
 
   protected expenseList = this.spesaService.allExpense;
+
+
+
+  removeExpense(id: string): void {
+    this.spesaService.removeExpense(id);
+
+  }
+
+  
 }

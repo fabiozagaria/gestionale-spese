@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Expense } from '../../type/spesa';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 
@@ -10,5 +10,15 @@ import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 })
 export class ExpenseList {
   expense = input<Expense | null>();
+  onRemove = output<string>();
+  onUpdate = output<string>();
+
+  onRemoveFunc(id: string): void {
+    this.onRemove.emit(id);
+  }
+
+  onUpdateFunc(id: string): void {
+    this.onUpdate.emit(id);
+  }
 
 }
