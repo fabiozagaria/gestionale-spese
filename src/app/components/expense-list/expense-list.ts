@@ -10,37 +10,43 @@ import { SpesaService } from '../../services/spesa-service';
   styleUrl: './expense-list.css',
 })
 export class ExpenseList {
-  expense = input.required<Expense>();
-  onRemove = output<string>();
-  onUpdate = output<UpdateExpenseEvent>();
-
-  protected editTitle = signal('');
-  protected editDescrizione = signal('');
-  protected isEditing = signal(false);
   
-  
+    expense = input.required<Expense>();
+    onRemove = output<string>();
+    onUpdate = output<UpdateExpenseEvent>();
 
-  onRemoveFunc(id: string): void {
-    this.onRemove.emit(id);
-  }
+    protected isEditing = signal(false);
+    protected editTitle = signal('');
+    protected editDescrizione = signal('');
 
-  onUpdateFunc(): void {
-    this.onUpdate.emit({
-      id: this.expense().id,
-      patch: {
-        title: '',
-        descrizione: ''
-      }
-    });
-  }
+    protected startEdit(): void {
+      const currentExpense = this.expense();
 
-  protected startEdit(): void {
-    const currentExpense = this.expense();
+      this.editTitle.set(currentExpense.title);
+      this.editDescrizione.set(currentExpense.descrizione);
+      this.isEditing.set(true);
+    }
 
-    this.editTitle.set(currentExpense.title);
+    protected saveEdit(): void {
+      const currentExpense = this.expense();
 
-    this.editDescrizione.set(currentExpense.descrizione);
-    this.isEditing.set(true);
-  }
+      this.onUpdate.emit({
+        id: currentExpense.id,
+        patch: {
+          title: this.editTitle(),
+          descrizione: this.editDescrizione()
+        }
+      });
 
-}
+      this.isEditing.set(false);
+    }
+
+    protected cancelEdit(): void {
+      this.isEditing.set(false);
+    }
+
+    protected removeExpense(): void {
+      this.onRemove.emit(this.expense().id);
+    }
+
+    }
